@@ -1,0 +1,41 @@
+{
+    "name": "project_2",
+    "version": "1.0.0",
+    "description": "Awesome PM project 2",
+    "private": true,
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "css-loader": "^5.0.2",
+        "eslint": "^7.20.0",
+        "eslint-config-airbnb": "^18.2.1",
+        "eslint-plugin-import": "^2.22.1",
+        "eslint-plugin-jsx-a11y": "^6.4.1",
+        "eslint-plugin-react": "^7.22.0",
+        "husky": "^5.0.9",
+        "prettier": "2.1.2",
+        "style-loader": "^2.0.0",
+        "webpack": "^5.22.0",
+        "webpack-cli": "^4.5.0"
+    },
+    "scripts": {
+        "build": "npx webpack",
+        "start": "webpack --watch",
+        "lint": "eslint --fix '**/*.js'",
+        "format": "prettier --write '**/*.js'"
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "lint-staged"
+        }
+    },
+    "lint-staged": {
+        "**/*.{ts,tsx,json,js,md}": [
+            "eslint  --fix"
+        ],
+        "**/*.{ts,tsx,json,js,md,yml}": [
+            "prettier --write"
+        ]
+    }
+}
