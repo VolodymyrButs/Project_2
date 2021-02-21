@@ -1,0 +1,49 @@
+#dashboard-content {
+  display: flex;
+  justify-content: space-between;
+}
+
+.task-type-section {
+  display: flex;
+  flex-direction: column;
+  width: 250px;
+}
+
+.task-type-section-title {
+  font-family: Montserrat;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 29px;
+  color: #555a5f;
+
+  margin-bottom: 15px;
+}
+
+.add-task-section {
+  display: flex;
+
+  font-family: Montserrat;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 22px;
+  color: #666a6d;
+
+  margin-top: 0;
+}
+
+.btn {
+  outline: none;
+  border: none;
+  background: none;
+}
+
+.btn:hover {
+  cursor: pointer;
+}
+
+.btn-add-task img {
+  width: 28px;
+  margin: auto;
+}

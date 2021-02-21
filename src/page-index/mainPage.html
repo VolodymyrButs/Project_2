@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../css/mainPage.css" />
+    <link rel="stylesheet" href="../css/dashboard.css" />
+    <link rel="stylesheet" href="../css/taskTypes.css" />
+    <link rel="stylesheet" href="../css/card.css" />
+    <link rel="stylesheet" href="../css/newTask.css" />
+    <title>Projecto</title>
+  </head>
+  <body>
+    <div class="container">
+      <div id="left-bar">
+        <h1 class="app-name">Projecto</h1>
+        <ul id="task-types">
+          <li class="task-types-active">
+            <img src="../img/iconDashboard.png" alt="Dashboard" /><a
+              >Dashboard</a
+            >
+          </li>
+          <li><img src="../img/iconToDo.png" alt="To Do" /><a>To Do</a></li>
+          <li>
+            <img src="../img/iconInProgress.png" alt="In Progress" /><a
+              >In progress</a
+            >
+          </li>
+          <li>
+            <img src="../img/iconTesting.png" alt="Testing" /><a>Testing</a>
+          </li>
+          <li><img src="../img/iconDone.png" alt="Done" /><a>Done</a></li>
+          <li>
+            <img src="../img/iconLogOut.png" alt="Log Out" /><a>Log Out</a>
+          </li>
+        </ul>
+      </div>
+
+      <div id="main-section">
+        <div id="top-section">
+          <h1 id="section-title">Dashboard</h1>
+          <div id="user-represent">
+            <div id="avatar">
+              <p>D</p>
+            </div>
+            <p>Hi, David</p>
+          </div>
+        </div>
+
+        <div class="add-task-section">
+          <p>Add task</p>
+          <button class="btn-add-task btn">
+            <img src="../img/iconAddTask.png" alt="Add task" />
+          </button>
+        </div>
+
+        <form id="new-task">
+          <input type="text" id="new-task-name" placeholder="Add new task" />
+          <textarea
+            name="content"
+            id="new-task-content"
+            cols="30"
+            rows="10"
+            placeholder="Add description"
+          ></textarea>
+          <div id="status-options">
+            <p>
+              <input
+                name="status-option"
+                type="radio"
+                id="radioToDo"
+                value="0"
+              />To Do
+            </p>
+            <p>
+              <input
+                name="status-option"
+                type="radio"
+                id="radioInProgress"
+                value="1"
+              />In Progress
+            </p>
+            <p>
+              <input
+                name="status-option"
+                type="radio"
+                id="radioTesting"
+                value="2"
+              />Testing
+            </p>
+            <p>
+              <input
+                name="status-option"
+                type="radio"
+                id="radioDone"
+                value="3"
+              />Done
+            </p>
+          </div>
+          <div class="new-note-btns">
+            <button type="submit" id="submit-new-task" class="btn">
+              Add task
+            </button>
+            <button type="button" id="new-task-close" class="btn">
+              <img src="../img/trash.png" />
+              <p>Delete</p>
+            </button>
+          </div>
+        </form>
+
+        <div id="dashboard-content">
+          <div id="toDo" class="task-type-section">
+            <h2 class="task-type-section-title">To Do:</h2>
+          </div>
+
+          <div id="inProgress" class="task-type-section">
+            <h2 class="task-type-section-title">In Progress:</h2>
+          </div>
+
+          <div id="testing" class="task-type-section">
+            <h2 class="task-type-section-title">Testing:</h2>
+          </div>
+
+          <div id="done" class="task-type-section">
+            <h2 class="task-type-section-title">Done:</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="../js/card.js"></script>
+  </body>
+</html>
