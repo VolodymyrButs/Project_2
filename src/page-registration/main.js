@@ -1,7 +1,5 @@
 import ToDo from '../js/todo-component';
 import 'normalize.css/normalize.css';
-import '../css/main.css';
-import './page.css';
 
 const card = new ToDo('title', 'status', 'description', 11);
 

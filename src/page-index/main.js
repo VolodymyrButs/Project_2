@@ -1,4 +1,9 @@
 import Card from '../js/card-component.js';
+import '../css/mainPage.css';
+import '../css/dashboard.css';
+import '../css/taskTypes.css';
+import '../css/card.css';
+import '../css/newTask.css';
 
 // -----EXAMPLE CARDS-----
 

@@ -39,19 +39,19 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
-      template: "./src/page-index/tmpl.html",
+      template: "./src/page-index/mainPage.html",
       inject: "body",
       chunks: ["index"],
       filename: "index.html",
     }),
     new HtmlWebpackPlugin({
-      template: "./src/page-login/tmpl.html",
+      template: "./src/page-login/login.html",
       inject: "body",
       chunks: ["login"],
       filename: "login.html",
     }),
     new HtmlWebpackPlugin({
-      template: "./src/page-registration/tmpl.html",
+      template: "./src/page-registration/register.html",
       inject: "body",
       chunks: ["registration"],
       filename: "registration.html",
