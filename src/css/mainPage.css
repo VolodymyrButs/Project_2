@@ -11,7 +11,7 @@ body {
   gap: 18px;
 }
 
-#left-bar {
+#left-bar * {
   position: sticky;
   position: -webkit-sticky;
   top: 0;
@@ -28,6 +28,10 @@ body {
 }
 
 #task-types {
+  position: sticky;
+  position: -webkit-sticky;
+  top: 80px;
+
   list-style: none;
 
   margin-top: 20px;
