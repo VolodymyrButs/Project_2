@@ -4,8 +4,6 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="../css/dashboard.css" />
-    <link rel="stylesheet" href="../css/login.css" />
     <title>Register</title>
   </head>
   <body>
@@ -13,18 +11,31 @@
       <div id="main-start">
         <h1 id="slogan">Become a member of our community</h1>
         <p id="form-name">Start right now!</p>
-        <form action="" id="login-form">
+        <form id="login-form">
           <input id="email" type="email" placeholder="Enter your email" />
-          <input id="login" type="text" placeholder="Enter your login" />
+          <input
+            id="username"
+            type="text"
+            placeholder="Enter your login"
+            autocomplete="current-username"
+          />
           <input
             id="password"
             type="password"
             placeholder="Enter your password"
+            autocomplete="current-password"
           />
-          <button type="submit" class="btn btn-login">Sign up</button>
+          <button
+            id="registerSubmit"
+            class="btn btn-login"
+            onclick="e.preventDefault()"
+          >
+            Sign up
+          </button>
+          <p id="error"></p>
         </form>
       </div>
-      <img id="start-pic" src="../img/StartPic.png" />
+      <img id="start-pic" />
     </div>
   </body>
 </html>
