@@ -1,14 +1,46 @@
 import 'normalize.css/normalize.css';
-
 import '../css/dashboard.css';
 import '../css/login.css';
-
-const card = new ToDo('title', 'status', 'description', 11);
+import pic from '../img/StartPic.png';
 
 window.document.addEventListener('DOMContentLoaded', () => {
-  window.document.body.innerHTML = `<p>${Object.entries(card)} <p/>
-  <p>Registration</p>
-  <a href='./index.html'>Index</a>
-  <a href='./login.html'>Login</a>
-  `;
+  document.getElementById('start-pic').setAttribute('src', pic);
 });
+
+const loginlInput = document.querySelector('#login');
+const passInput = document.querySelector('#password');
+const form = document.querySelector('#login-form');
+const errorBlock = document.querySelector('#error');
+// const submitButton = document.querySelector('#btn-login');
+
+const authentication = () => {
+  const data = {
+    identifier: loginlInput.value,
+    password: passInput.value,
+  };
+  fetch('https://radiant-temple-07706.herokuapp.com/auth/local', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  })
+
+    // .then((response) => response.json())
+    // .then((body) => {
+    //   if (body.error) {
+    //     errorBlock.innerHTML = `${body.message[0].messages[0].message}`;
+    //   } else {
+    //     errorBlock.innerHTML = '';
+    //     window.localStorage.setItem('token', body.jwt);
+    //     window.location.href = 'index.html';
+    //   }
+    // });
+};
+
+const loginFormSubmit = (i) => {
+  i.preventDefault();
+  authentication();
+};
+form.addEventListener('submit', loginFormSubmit);
+
