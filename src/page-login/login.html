@@ -19,14 +19,20 @@
             type="password"
             placeholder="Enter your password"
           />
-          <button type="submit" class="btn btn-login">Sign in</button>
+          <button
+            type="submit"
+            class="btn btn-login"
+            onclick="event.preventDefault()"
+          >
+            Sign in
+          </button>
         </form>
         <p id="sign-up-link">
           Don't have an account?
-          <a href="../page-registration/register.html">Sign up here</a>
+          <a href="./registration.html">Sign up here</a>
         </p>
       </div>
-      <img id="start-pic" src="../img/StartPic.png" />
+      <img id="start-pic" />
     </div>
   </body>
 </html>
