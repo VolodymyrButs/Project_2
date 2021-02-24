@@ -7,8 +7,6 @@ window.document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('start-pic').setAttribute('src', pic);
 });
 
-window.localStorage.setItem('username', body.user.username);
-
 const loginlInput = document.querySelector('#login');
 const passInput = document.querySelector('#password');
 const form = document.querySelector('#login-form');
@@ -29,14 +27,20 @@ const authentication = () => {
     headers: {
       'content-type': 'application/json',
     },
-    body: JSON.stringify(data),
+    body: JSON.stringify(data), 
   })
 
-  .then((response) => {
-    if (response.status === 200) {
-        const tokenData = response.json();
-        saveToken(JSON.stringify(tokenData)); // сохраняем полученный токен в sessionStorage
-        return Promise.resolve()
+  .then((response) => response.json())
+  .then((body) => {
+    if (body.error) {
+      errorBlock.innerHTML = `${body.message[0].messages[0].message}`;
+    }
+    else if (body.status === 200) {
+      const tokenData = body.jwt.json();
+      saveToken(JSON.stringify(tokenData)); // сохраняем полученный токен в localStorage
+      window.localStorage.setItem('username', body.user.username);
+      window.location.href = 'index.html';
+      return Promise.resolve()
     }
     return Promise.reject();
   });
