@@ -7,11 +7,17 @@ window.document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('start-pic').setAttribute('src', pic);
 });
 
+window.localStorage.setItem('username', body.user.username);
+
 const loginlInput = document.querySelector('#login');
 const passInput = document.querySelector('#password');
 const form = document.querySelector('#login-form');
-const errorBlock = document.querySelector('#error');
+// const errorBlock = document.querySelector('#error');
 // const submitButton = document.querySelector('#btn-login');
+
+function saveToken(token) {
+  localStorage.setItem('tokenData', JSON.stringify(token));
+}
 
 const authentication = () => {
   const data = {
@@ -21,26 +27,25 @@ const authentication = () => {
   fetch('https://radiant-temple-07706.herokuapp.com/auth/local', {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json',
+      'content-type': 'application/json',
     },
     body: JSON.stringify(data),
   })
 
-    // .then((response) => response.json())
-    // .then((body) => {
-    //   if (body.error) {
-    //     errorBlock.innerHTML = `${body.message[0].messages[0].message}`;
-    //   } else {
-    //     errorBlock.innerHTML = '';
-    //     window.localStorage.setItem('token', body.jwt);
-    //     window.location.href = 'index.html';
-    //   }
-    // });
+  .then((response) => {
+    if (response.status === 200) {
+        const tokenData = response.json();
+        saveToken(JSON.stringify(tokenData)); // сохраняем полученный токен в sessionStorage
+        return Promise.resolve()
+    }
+    return Promise.reject();
+  });
 };
 
-const loginFormSubmit = (i) => {
-  i.preventDefault();
+const loginFormSubmit = (e) => {
+  e.preventDefault();
   authentication();
 };
+
 form.addEventListener('submit', loginFormSubmit);
 
