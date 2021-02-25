@@ -9,7 +9,7 @@ window.document.addEventListener('DOMContentLoaded', () => {
 const emailInput = document.querySelector('#email');
 const nameInput = document.querySelector('#username');
 const passInput = document.querySelector('#password');
-const form = document.querySelector('#login-form');
+const form = document.querySelector('#register-form');
 const errorBlock = document.querySelector('#error');
 
 const registration = () => {
@@ -39,9 +39,9 @@ const registration = () => {
     });
 };
 
-const loginFormSubmit = (e) => {
+const regFormSubmit = (e) => {
   e.preventDefault();
   registration();
 };
 
-form.addEventListener('submit', loginFormSubmit);
+form.addEventListener('submit', regFormSubmit);
