@@ -365,7 +365,7 @@ testingPage.addEventListener('click', () => {
 // -----DONE PAGE-----
 
 donePage.addEventListener('click', () => {
-  boardTitle.innerHTML = 'In Progress';
+  boardTitle.innerHTML = 'Done';
 
   donePage.parentElement.classList.add('task-types-active');
 
