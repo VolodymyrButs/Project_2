@@ -91,6 +91,10 @@ body {
 }
 
 .btn-login {
+  outline: none;
+  border: none;
+  background: none;
+
   height: 50px;
 
   background: #666a6d;
@@ -101,6 +105,10 @@ body {
   font-size: 23px;
 
   color: #ffffff;
+}
+
+.btn-login:hover {
+  cursor: pointer;
 }
 
 #sign-up-link a {

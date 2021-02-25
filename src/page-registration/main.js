@@ -18,6 +18,7 @@ const registration = () => {
     username: nameInput.value,
     password: passInput.value,
   };
+
   fetch('https://radiant-temple-07706.herokuapp.com/auth/local/register', {
     method: 'POST',
     headers: {

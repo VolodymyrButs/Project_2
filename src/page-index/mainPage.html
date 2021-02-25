@@ -12,14 +12,23 @@
         <h1 class="app-name">Projecto</h1>
         <ul id="task-types">
           <li class="task-types-active">
-            <img id="iconDashboard" alt="Dashboard" /><a>Dashboard</a>
+            <img id="iconDashboard" alt="Dashboard" /><a id="dashboard-page"
+              >Dashboard</a
+            >
           </li>
-          <li><img id="iconToDo" alt="To Do" /><a>To Do</a></li>
+          <li><img id="iconToDo" alt="To Do" /><a id="to-do-page">To Do</a></li>
           <li>
-            <img id="iconInProgress" alt="In Progress" /><a>In progress</a>
+            <img id="iconInProgress" alt="In Progress" /><a
+              id="in-progress-page"
+              >In progress</a
+            >
           </li>
-          <li><img id="iconTesting" alt="Testing" /><a>Testing</a></li>
-          <li><img id="iconDone" alt="Done" /><a>Done</a></li>
+          <li>
+            <img id="iconTesting" alt="Testing" /><a id="testing-page"
+              >Testing</a
+            >
+          </li>
+          <li><img id="iconDone" alt="Done" /><a id="done-page">Done</a></li>
           <li><img id="iconLogOut" alt="Log Out" /><a>Log Out</a></li>
         </ul>
       </div>
@@ -31,7 +40,7 @@
             <div id="avatar">
               <p>D</p>
             </div>
-            <p>Hi, David</p>
+            <p id="main-section-user-name"></p>
           </div>
         </div>
 
@@ -42,7 +51,7 @@
           </button>
         </div>
 
-        <form id="new-task">
+        <form action="#" id="new-task">
           <input type="text" id="new-task-name" placeholder="Add new task" />
           <textarea
             name="content"
@@ -57,7 +66,7 @@
                 name="status-option"
                 type="radio"
                 id="radioToDo"
-                value="0"
+                value="to_do"
               />To Do
             </p>
             <p>
@@ -65,7 +74,7 @@
                 name="status-option"
                 type="radio"
                 id="radioInProgress"
-                value="1"
+                value="in_progress"
               />In Progress
             </p>
             <p>
@@ -73,7 +82,7 @@
                 name="status-option"
                 type="radio"
                 id="radioTesting"
-                value="2"
+                value="testing"
               />Testing
             </p>
             <p>
@@ -81,7 +90,7 @@
                 name="status-option"
                 type="radio"
                 id="radioDone"
-                value="3"
+                value="done"
               />Done
             </p>
           </div>

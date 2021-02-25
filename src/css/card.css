@@ -15,9 +15,12 @@
 
 .card-name {
   width: fit-content;
-  height: 17px;
+  min-height: 17px;
+  height: fit-content;
   padding: 4px 11px;
   margin: auto 0;
+
+  word-break: break-word;
 
   border-radius: 10px;
 
@@ -35,7 +38,7 @@
   justify-content: space-between;
 
   height: 20px;
-  margin: auto 0;
+  margin: 0;
 }
 
 .card-option-dot {
@@ -86,7 +89,9 @@
   font-style: normal;
   font-weight: 300;
   font-size: 12px;
-  line-height: 15px;
+  line-height: 18px;
   letter-spacing: 0.11em;
   color: #4a4a4a;
+
+  word-break: break-word;
 }
