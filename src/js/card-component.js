@@ -1,8 +1,13 @@
+//
+// Created by Anna Vasylashko
+//
+
 export default class Card {
-  constructor(name, content, taskType) {
-    this.name = name;
-    this.content = content;
-    this.taskType = taskType;
+  constructor(id, title, description, status) {
+    this.id = id;
+    this.title = title;
+    this.description = description;
+    this.status = status;
   }
 
   // -----DECORATOR PATTERN-----
@@ -18,12 +23,11 @@ export default class Card {
 
     const cardName = document.createElement('span');
     cardName.className = 'card-name';
-    cardName.innerHTML = this.name;
+    cardName.innerHTML = this.title;
 
     const cardOptionsBtn = document.createElement('button');
     cardOptionsBtn.className = 'card-options btn';
 
-    // eslint-disable-next-line no-plusplus
     for (let i = 0; i < 3; i++) {
       const dot = document.createElement('div');
       dot.className = 'card-option-dot';
@@ -33,7 +37,7 @@ export default class Card {
 
     const cardContent = document.createElement('p');
     cardContent.className = 'card-content';
-    cardContent.innerHTML = this.content;
+    cardContent.innerHTML = this.description;
 
     // Creating card options (chage/delete)
 
@@ -48,16 +52,28 @@ export default class Card {
     deleteOption.className = 'card-options-delete btn';
     deleteOption.innerHTML = 'Delete';
 
+    // Add method to implement delete option
+
+    deleteOption.addEventListener('click', () => {
+      if (this.onDelete) {
+        this.onDelete(this.id);
+      }
+    });
+
+    changeOption.addEventListener('click', () => {
+      if (this.onChange) {
+        this.onChange(this);
+      }
+    });
+
+    // Show/hide card options
+
     cardOptionsBtn.addEventListener('click', () => {
       if (cardOptions.style.display === 'flex') {
         cardOptions.style.display = 'none';
       } else {
         cardOptions.style.display = 'flex';
       }
-    });
-
-    deleteOption.addEventListener('click', () => {
-      cardForm.remove();
     });
 
     // Appending card elements
@@ -73,20 +89,20 @@ export default class Card {
 
     // Applying card name colors according to task type
 
-    switch (this.taskType) {
-      case 0:
+    switch (this.status) {
+      case 'to_do':
         cardName.style.color = '#d7385e';
         cardName.style.background = '#ffe1e8';
         break;
-      case 1:
+      case 'in_progress':
         cardName.style.color = '#ff9345';
         cardName.style.background = '#ffe6d4';
         break;
-      case 2:
+      case 'testing':
         cardName.style.color = '#ffb800';
         cardName.style.background = '#fef8d7';
         break;
-      case 3:
+      case 'done':
         cardName.style.color = '#37d050';
         cardName.style.background = '#daffd4';
         break;

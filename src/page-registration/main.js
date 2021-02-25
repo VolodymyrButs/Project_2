@@ -18,6 +18,7 @@ const registration = () => {
     username: nameInput.value,
     password: passInput.value,
   };
+
   fetch('https://radiant-temple-07706.herokuapp.com/auth/local/register', {
     method: 'POST',
     headers: {
@@ -32,6 +33,7 @@ const registration = () => {
       } else {
         errorBlock.innerHTML = '';
         window.localStorage.setItem('token', body.jwt);
+        window.localStorage.setItem('username', body.user.username);
         window.location.href = 'index.html';
       }
     });
@@ -41,4 +43,5 @@ const loginFormSubmit = (e) => {
   e.preventDefault();
   registration();
 };
+
 form.addEventListener('submit', loginFormSubmit);

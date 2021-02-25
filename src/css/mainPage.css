@@ -11,7 +11,7 @@ body {
   gap: 18px;
 }
 
-#left-bar * {
+#left-bar {
   position: sticky;
   position: -webkit-sticky;
   top: 0;

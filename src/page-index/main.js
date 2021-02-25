@@ -1,7 +1,10 @@
+//
+// Created by Anna Vasylashko
+//
+
 import Card from '../js/card-component';
 import '../css/mainPage.css';
 import '../css/dashboard.css';
-import '../css/taskTypes.css';
 import '../css/card.css';
 import '../css/newTask.css';
 import iconTesting from '../img/iconTesting.png';
@@ -12,7 +15,9 @@ import iconInProgress from '../img/iconInProgress.png';
 import iconToDo from '../img/iconToDo.png';
 import trash from '../img/trash.png';
 import iconLogOut from '../img/iconLogOut.png';
-// -----EXAMPLE CARDS-----
+
+// -----SET ICONS ON THE PAGE-----
+
 window.document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('iconTesting').setAttribute('src', iconTesting);
   document.getElementById('iconAddTask').setAttribute('src', iconAddTask);
@@ -23,53 +28,18 @@ window.document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('icontrash').setAttribute('src', trash);
   document.getElementById('iconLogOut').setAttribute('src', iconLogOut);
 });
-const card1 = new Card(
-  'Research',
-  'Research and analize analogs of the app and how to make your project more usable and in demand',
-  0,
-);
 
-const card2 = new Card(
-  'Research',
-  'Research and analize what kinds of designs are used for this kind of app',
-  0,
-);
+// -----SET USER NAME ON DASHBOARD-----
 
-const card3 = new Card(
-  'Design',
-  'Think of a better way to show task cards on the dashboard',
-  1,
-);
+function capitalizeFirstLetter(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
 
-const card4 = new Card(
-  'illustration',
-  'Create icons for all kinds of tasks (dashboard, to-do, in-progres, testing and done)',
-  1,
-);
+const username = window.localStorage.getItem('username');
 
-const card5 = new Card(
-  'illustration',
-  'Create logo, user representation, task bar visualisation',
-  1,
-);
-
-const card6 = new Card(
-  'illustration',
-  'Presenting design prototypes to the project teammates',
-  2,
-);
-
-const card7 = new Card(
-  'Presenting',
-  'Create the first version of main page design in the project app',
-  3,
-);
-
-const card8 = new Card(
-  'design',
-  'Design the templates for: <br>- task cards <br>- tags <br>- task sections <br>- task bar',
-  3,
-);
+document.querySelector(
+  '#main-section-user-name'
+).innerHTML = `Hi, ${capitalizeFirstLetter(username)}`;
 
 // -----APPENDING CARDS IN SECTIONS-----
 
@@ -79,65 +49,338 @@ const testingSection = document.getElementById('testing');
 const doneSection = document.getElementById('done');
 
 const appendCard = (newCard) => {
-  console.log('here');
-  console.log(newCard);
-
   let section;
 
-  switch (newCard.taskType) {
-    case 0:
-      console.log('0');
+  switch (newCard.status) {
+    case 'to_do':
       section = toDoSection;
       break;
-    case 1:
-      console.log('1');
+    case 'in_progress':
       section = InProgressSection;
       break;
-    case 2:
-      console.log('2');
+    case 'testing':
       section = testingSection;
       break;
-    case 3:
-      console.log('3');
+    case 'done':
       section = doneSection;
       break;
     default:
+      break;
   }
+
+  newCard.onDelete = removeCard;
+  newCard.onChange = openChangeCardMenu;
 
   section.appendChild(newCard.htmlRepresentation);
 };
 
-[card1, card2, card3, card4, card5, card6, card7, card8].forEach(appendCard);
+// -----POST, PUT, GET, DELETE AND REFRESH DATA TEMPLATES-----
+
+// -----POST DATA-----
+
+async function postData(url = '', data = {}) {
+  const response = await fetch(url, {
+    method: 'POST',
+    mode: 'cors',
+    cache: 'no-cache',
+    credentials: 'same-origin',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${window.localStorage.getItem('token')}`,
+    },
+    redirect: 'follow',
+    referrerPolicy: 'no-referrer',
+    body: JSON.stringify(data), // body data type must match "Content-Type" header
+  });
+  return await response.json(); // parses JSON response into native JavaScript objects
+}
+
+// -----PUT DATA-----
+
+async function putData(url = '', data = {}) {
+  const response = await fetch(url, {
+    method: 'PUT',
+    mode: 'cors',
+    cache: 'no-cache',
+    credentials: 'same-origin',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${window.localStorage.getItem('token')}`,
+    },
+    redirect: 'follow',
+    referrerPolicy: 'no-referrer',
+    body: JSON.stringify(data), // body data type must match "Content-Type" header
+  });
+  return await response.json(); // parses JSON response into native JavaScript objects
+}
+
+// -----GET DATA-----
+
+async function getData(url = '') {
+  const response = await fetch(url, {
+    method: 'GET',
+    mode: 'cors',
+    cache: 'no-cache',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${window.localStorage.getItem('token')}`,
+    },
+  });
+  return await response.json(); // parses JSON response into native JavaScript objects
+}
+
+// -----REFRESH DATA-----
+
+const refreshTasks = () => {
+  getData('https://radiant-temple-07706.herokuapp.com/cards').then((data) => {
+    console.log(data);
+    data.forEach((chunk) => {
+      let id = chunk.id;
+      let title = chunk.title;
+      let description = chunk.description;
+      let status = chunk.status;
+      let card = new Card(id, title, description, status);
+      console.log(card);
+      appendCard(card);
+    });
+  });
+};
+
+// -----DELETE DATA-----
+
+const removeCard = (id) => {
+  fetch('https://radiant-temple-07706.herokuapp.com/cards/' + id, {
+    method: 'DELETE',
+    mode: 'cors',
+    cache: 'no-cache',
+    credentials: 'same-origin',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${window.localStorage.getItem('token')}`,
+    },
+  })
+    .then(() => {
+      console.log('removed');
+      location.reload();
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+};
+
+// -----CHANGE OPTION-----
+
+const openChangeCardMenu = (card) => {
+  let newTaskStatus = document.querySelector('#status-options');
+
+  createNewTask.style.display = 'flex';
+
+  newTaskName.value = card.title;
+  newTaskContent.value = card.description;
+  newTaskStatus.value = card.status;
+
+  newTaskName.contentEditable = true;
+  newTaskContent.contentEditable = true;
+
+  card.title = newTaskName.value;
+  card.description = newTaskContent.value;
+  card.status = newTaskStatus.value;
+
+  createNewTask.onsubmit = () => {
+    changeCard(card);
+
+    createNewTask.onsubmit = {};
+
+    return false;
+  };
+};
+
+const changeCard = (card) => {
+  card.title = newTaskName.value;
+  card.description = newTaskContent.value;
+  card.status = document.querySelector(
+    'input[name="status-option"]:checked'
+  ).value;
+
+  if (card.title !== '' && card.description !== '') {
+    putData(`https://radiant-temple-07706.herokuapp.com/cards/${card.id}`, card)
+      .then((data) => {
+        console.log(data);
+        location.reload();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+};
 
 // -----WORKING WITH NEW TASK-----
 
 const btnAddTask = document.querySelector('.btn-add-task');
 const btnCloseTask = document.querySelector('#new-task-close');
 const createNewTask = document.querySelector('#new-task');
-const submitNewTask = document.querySelector('#submit-new-task');
 const newTaskName = document.querySelector('#new-task-name');
 const newTaskContent = document.querySelector('#new-task-content');
 
+// Open/close new task form
+
 btnAddTask.addEventListener('click', () => {
   createNewTask.style.display = 'flex';
-  document.getElementById('radioToDo').checked = true;
+  document.getElementById('radioToDo').checked = true; // set default value
+
+  createNewTask.onsubmit = () => {
+    submitNewTask();
+
+    createNewTask.onsubmit = {};
+    return false;
+  };
 });
 
 btnCloseTask.addEventListener('click', () => {
   newTaskName.value = '';
   newTaskContent.value = '';
-  document.getElementById('radioToDo').checked = true;
+  document.getElementById('radioToDo').checked = true; // set default value
   createNewTask.style.display = 'none';
 });
 
-submitNewTask.addEventListener('click', () => {
-  const name = newTaskName.value;
-  const content = newTaskContent.value;
-  const taskType = document.querySelector('input[name="status-option"]:checked')
+// Submit new task
+
+const submitNewTask = () => {
+  const title = newTaskName.value;
+  const description = newTaskContent.value;
+  const status = document.querySelector('input[name="status-option"]:checked')
     .value;
 
-  alert(name);
-  alert(content);
-  alert(taskType);
-  if (name !== '' && content !== '') return new Card(name, content, taskType);
+  if (title !== '' && description !== '') {
+    let card = new Card(null, title, description, status);
+    console.log(card);
+    postData('https://radiant-temple-07706.herokuapp.com/cards', card).then(
+      (data) => {
+        console.log(data);
+        location.reload();
+      }
+    );
+  }
+};
+
+// -----ROUTING-----
+
+const boardTitle = document.querySelector('#section-title');
+const dashboardPage = document.querySelector('#dashboard-page');
+const toDoPage = document.querySelector('#to-do-page');
+const inProgressPage = document.querySelector('#in-progress-page');
+const testingPage = document.querySelector('#testing-page');
+const donePage = document.querySelector('#done-page');
+
+// -----DASHBOARD PAGE-----
+
+dashboardPage.addEventListener('click', () => {
+  boardTitle.innerHTML = 'Dashboard';
+
+  dashboardPage.parentElement.classList.add('task-types-active');
+
+  toDoPage.parentElement.classList.remove('task-types-active');
+  inProgressPage.parentElement.classList.remove('task-types-active');
+  testingPage.parentElement.classList.remove('task-types-active');
+  donePage.parentElement.classList.remove('task-types-active');
+
+  document.querySelector('#toDo .task-type-section-title').style.display =
+    'block';
+  document.querySelector('#inProgress .task-type-section-title').style.display =
+    'block';
+  document.querySelector('#testing .task-type-section-title').style.display =
+    'block';
+  document.querySelector('#done .task-type-section-title').style.display =
+    'block';
+
+  toDoSection.style.display = 'flex';
+  InProgressSection.style.display = 'flex';
+  testingSection.style.display = 'flex';
+  doneSection.style.display = 'flex';
 });
+
+// -----TO DO PAGE-----
+
+toDoPage.addEventListener('click', () => {
+  boardTitle.innerHTML = 'To Do';
+
+  toDoPage.parentElement.classList.add('task-types-active');
+
+  dashboardPage.parentElement.classList.remove('task-types-active');
+  inProgressPage.parentElement.classList.remove('task-types-active');
+  testingPage.parentElement.classList.remove('task-types-active');
+  donePage.parentElement.classList.remove('task-types-active');
+
+  document.querySelector('#toDo .task-type-section-title').style.display =
+    'none';
+
+  toDoSection.style.display = 'flex';
+  InProgressSection.style.display = 'none';
+  testingSection.style.display = 'none';
+  doneSection.style.display = 'none';
+});
+
+// -----IN PROGRESS PAGE-----
+
+inProgressPage.addEventListener('click', () => {
+  boardTitle.innerHTML = 'In Progress';
+
+  inProgressPage.parentElement.classList.add('task-types-active');
+
+  dashboardPage.parentElement.classList.remove('task-types-active');
+  toDoPage.parentElement.classList.remove('task-types-active');
+  testingPage.parentElement.classList.remove('task-types-active');
+  donePage.parentElement.classList.remove('task-types-active');
+
+  document.querySelector('#inProgress .task-type-section-title').style.display =
+    'none';
+
+  toDoSection.style.display = 'none';
+  InProgressSection.style.display = 'flex';
+  testingSection.style.display = 'none';
+  doneSection.style.display = 'none';
+});
+
+// -----TESTING PAGE-----
+
+testingPage.addEventListener('click', () => {
+  boardTitle.innerHTML = 'Testing';
+
+  testingPage.parentElement.classList.add('task-types-active');
+
+  dashboardPage.parentElement.classList.remove('task-types-active');
+  inProgressPage.parentElement.classList.remove('task-types-active');
+  toDoPage.parentElement.classList.remove('task-types-active');
+  donePage.parentElement.classList.remove('task-types-active');
+
+  document.querySelector('#testing .task-type-section-title').style.display =
+    'none';
+
+  toDoSection.style.display = 'none';
+  InProgressSection.style.display = 'none';
+  testingSection.style.display = 'flex';
+  doneSection.style.display = 'none';
+});
+
+// -----DONE PAGE-----
+
+donePage.addEventListener('click', () => {
+  boardTitle.innerHTML = 'In Progress';
+
+  donePage.parentElement.classList.add('task-types-active');
+
+  dashboardPage.parentElement.classList.remove('task-types-active');
+  toDoPage.parentElement.classList.remove('task-types-active');
+  testingPage.parentElement.classList.remove('task-types-active');
+  InProgressSection.parentElement.classList.remove('task-types-active');
+
+  document.querySelector('#done .task-type-section-title').style.display =
+    'none';
+
+  toDoSection.style.display = 'none';
+  InProgressSection.style.display = 'none';
+  testingSection.style.display = 'none';
+  doneSection.style.display = 'flex';
+});
+
+refreshTasks();
