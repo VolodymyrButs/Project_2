@@ -4,8 +4,6 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="../css/dashboard.css" />
-    <link rel="stylesheet" href="../css/login.css" />
     <title>Login</title>
   </head>
   <body>
@@ -14,17 +12,23 @@
         <h1 id="slogan">Transforming paperwork into work</h1>
         <p id="welcome">Welcome back!</p>
         <p id="form-name">Log in to continue</p>
-        <form action="" id="login-form">
-          <input id="login" type="text" placeholder="Enter your login" />
+        <form id="login-form">
+          <input
+            id="login"
+            type="text"
+            placeholder="Enter your login"
+            autocomplete="current-login"
+          />
           <input
             id="password"
             type="password"
             placeholder="Enter your password"
+            autocomplete="current-password"
           />
           <button
             type="submit"
             class="btn btn-login"
-            onclick="event.preventDefault()"
+            onclick="e=>e.preventDefault()"
           >
             Sign in
           </button>
@@ -33,6 +37,7 @@
           Don't have an account?
           <a href="./registration.html">Sign up here</a>
         </p>
+        <p id="error"></p>
       </div>
       <img id="start-pic" />
     </div>

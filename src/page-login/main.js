@@ -9,15 +9,11 @@ window.document.addEventListener('DOMContentLoaded', () => {
 
 const loginlInput = document.querySelector('#login');
 const passInput = document.querySelector('#password');
-const form = document.querySelector('#login-form');
-// const errorBlock = document.querySelector('#error');
+const formLogin = document.querySelector('#login-form');
+const errorBlock = document.querySelector('#error');
 // const submitButton = document.querySelector('#btn-login');
 
-function saveToken(token) {
-  localStorage.setItem('tokenData', JSON.stringify(token));
-}
-
-const authentication = () => {
+const authentification = () => {
   const data = {
     identifier: loginlInput.value,
     password: passInput.value,
@@ -27,28 +23,24 @@ const authentication = () => {
     headers: {
       'content-type': 'application/json',
     },
-    body: JSON.stringify(data), 
+    body: JSON.stringify(data),
   })
-
-  .then((response) => response.json())
-  .then((body) => {
-    if (body.error) {
-      errorBlock.innerHTML = `${body.message[0].messages[0].message}`;
-    }
-    else if (body.status === 200) {
-      const tokenData = body.jwt.json();
-      saveToken(JSON.stringify(tokenData)); // сохраняем полученный токен в localStorage
-      window.localStorage.setItem('username', body.user.username);
-      window.location.href = 'index.html';
-      return Promise.resolve()
-    }
-    return Promise.reject();
-  });
+    .then((response) => response.json())
+    .then((body) => {
+      if (body.error) {
+        errorBlock.innerHTML = `${body.message[0].messages[0].message}`;
+      } else {
+        errorBlock.innerHTML = '';
+        window.localStorage.setItem('token', body.jwt); // сохраняем полученный токен в localStorage
+        window.localStorage.setItem('username', body.user.username);
+        window.location.href = 'index.html';
+      }
+    });
 };
 
 const loginFormSubmit = (e) => {
   e.preventDefault();
-  authentication();
+  authentification();
 };
 
-form.addEventListener('submit', loginFormSubmit);
+formLogin.addEventListener('submit', loginFormSubmit);
