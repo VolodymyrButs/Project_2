@@ -1,4 +1,4 @@
-# Project_2
+# Project_2 
 :bar_chart:**Projecto** is a web-based list-making application. 
 
 Users can create their task boards with different columns and move the tasks between them. <br>Columns include task statuses such as To Do, In Progress, Testing, Done.
@@ -7,6 +7,15 @@ Users can create their task boards with different columns and move the tasks bet
 :small_blue_diamond: [Project steps](#project-steps) <br>
 :small_blue_diamond: [Starting development](#starting-development) <br>
 :small_blue_diamond: [Credits](#credits)
+
+## Project preview
+### [Link to aplication](https://volodymyrbuts.github.io/Project_2/index.html)
+
+![img](https://github.com/VolodymyrButs/Project_2/blob/master/src/img/photo_2021-02-25%2021.29.08.jpeg)
+
+## Adding task example
+
+![img](https://github.com/VolodymyrButs/Project_2/blob/master/src/img/photo_2021-02-25%2021.29.13.jpeg)
 
 ## Project steps
 
