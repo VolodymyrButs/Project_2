@@ -28,7 +28,7 @@ export default class Card {
     const cardOptionsBtn = document.createElement('button');
     cardOptionsBtn.className = 'card-options btn';
 
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < 3; i += 1) {
       const dot = document.createElement('div');
       dot.className = 'card-option-dot';
 

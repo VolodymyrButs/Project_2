@@ -29,7 +29,9 @@
             >
           </li>
           <li><img id="iconDone" alt="Done" /><a id="done-page">Done</a></li>
-          <li><img id="iconLogOut" alt="Log Out" /><a>Log Out</a></li>
+          <li id="logOut">
+            <img id="iconLogOut" alt="Log Out" /><a>Log Out</a>
+          </li>
         </ul>
       </div>
 
@@ -38,7 +40,7 @@
           <h1 id="section-title">Dashboard</h1>
           <div id="user-represent">
             <div id="avatar">
-              <p>D</p>
+              <p id="avaterLetter"></p>
             </div>
             <p id="main-section-user-name"></p>
           </div>
@@ -95,12 +97,9 @@
             </p>
           </div>
           <div class="new-note-btns">
-            <button type="submit" id="submit-new-task" class="btn">
-              Add task
-            </button>
+            <button type="submit" id="submit-new-task" class="btn"></button>
             <button type="button" id="new-task-close" class="btn">
-              <img id="icontrash" />
-              <p>Delete</p>
+              <p>Cancel</p>
             </button>
           </div>
         </form>

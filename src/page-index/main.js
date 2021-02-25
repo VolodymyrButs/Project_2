@@ -1,3 +1,7 @@
+/* eslint-disable no-alert */
+/* eslint-disable no-param-reassign */
+/* eslint-disable no-use-before-define */
+/* eslint-disable no-console */
 //
 // Created by Anna Vasylashko
 //
@@ -13,7 +17,6 @@ import iconDashboard from '../img/iconDashboard.png';
 import iconDone from '../img/iconDone.png';
 import iconInProgress from '../img/iconInProgress.png';
 import iconToDo from '../img/iconToDo.png';
-import trash from '../img/trash.png';
 import iconLogOut from '../img/iconLogOut.png';
 
 // -----SET ICONS ON THE PAGE-----
@@ -25,12 +28,17 @@ window.document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('iconDone').setAttribute('src', iconDone);
   document.getElementById('iconInProgress').setAttribute('src', iconInProgress);
   document.getElementById('iconToDo').setAttribute('src', iconToDo);
-  document.getElementById('icontrash').setAttribute('src', trash);
   document.getElementById('iconLogOut').setAttribute('src', iconLogOut);
 });
 
-// -----SET USER NAME ON DASHBOARD-----
+if (!window.localStorage.getItem('token')) {
+  window.location.href = 'login.html';
+}
 
+// -----WORK WITH USER ON DASHBOARD-----
+
+const avaterLetter = document.getElementById('avaterLetter');
+const addTaskButton = document.getElementById('submit-new-task');
 function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
@@ -38,7 +46,7 @@ function capitalizeFirstLetter(string) {
 const username = window.localStorage.getItem('username');
 
 document.querySelector(
-  '#main-section-user-name'
+  '#main-section-user-name',
 ).innerHTML = `Hi, ${capitalizeFirstLetter(username)}`;
 
 // -----APPENDING CARDS IN SECTIONS-----
@@ -47,6 +55,7 @@ const toDoSection = document.getElementById('toDo');
 const InProgressSection = document.getElementById('inProgress');
 const testingSection = document.getElementById('testing');
 const doneSection = document.getElementById('done');
+const logOut = document.getElementById('logOut');
 
 const appendCard = (newCard) => {
   let section;
@@ -92,7 +101,7 @@ async function postData(url = '', data = {}) {
     referrerPolicy: 'no-referrer',
     body: JSON.stringify(data), // body data type must match "Content-Type" header
   });
-  return await response.json(); // parses JSON response into native JavaScript objects
+  return response.json(); // parses JSON response into native JavaScript objects
 }
 
 // -----PUT DATA-----
@@ -111,7 +120,7 @@ async function putData(url = '', data = {}) {
     referrerPolicy: 'no-referrer',
     body: JSON.stringify(data), // body data type must match "Content-Type" header
   });
-  return await response.json(); // parses JSON response into native JavaScript objects
+  return response.json(); // parses JSON response into native JavaScript objects
 }
 
 // -----GET DATA-----
@@ -126,7 +135,7 @@ async function getData(url = '') {
       Authorization: `Bearer ${window.localStorage.getItem('token')}`,
     },
   });
-  return await response.json(); // parses JSON response into native JavaScript objects
+  return response.json(); // parses JSON response into native JavaScript objects
 }
 
 // -----REFRESH DATA-----
@@ -135,21 +144,41 @@ const refreshTasks = () => {
   getData('https://radiant-temple-07706.herokuapp.com/cards').then((data) => {
     console.log(data);
     data.forEach((chunk) => {
-      let id = chunk.id;
-      let title = chunk.title;
-      let description = chunk.description;
-      let status = chunk.status;
-      let card = new Card(id, title, description, status);
+      const { id } = chunk;
+      const { title } = chunk;
+      const { description } = chunk;
+      const { status } = chunk;
+      const card = new Card(id, title, description, status);
       console.log(card);
       appendCard(card);
     });
   });
 };
 
+// Submit new task
+
+const submitNewTask = () => {
+  const title = newTaskName.value;
+  const description = newTaskContent.value;
+  const status = document.querySelector('input[name="status-option"]:checked')
+    .value;
+
+  if (title !== '' && description !== '') {
+    const card = new Card(null, title, description, status);
+    console.log(card);
+    postData('https://radiant-temple-07706.herokuapp.com/cards', card).then(
+      (data) => {
+        console.log(data);
+        document.location.reload();
+      },
+    );
+  }
+};
+
 // -----DELETE DATA-----
 
 const removeCard = (id) => {
-  fetch('https://radiant-temple-07706.herokuapp.com/cards/' + id, {
+  fetch(`https://radiant-temple-07706.herokuapp.com/cards/${id}`, {
     method: 'DELETE',
     mode: 'cors',
     cache: 'no-cache',
@@ -161,7 +190,7 @@ const removeCard = (id) => {
   })
     .then(() => {
       console.log('removed');
-      location.reload();
+      document.location.reload();
     })
     .catch((err) => {
       console.error(err);
@@ -171,7 +200,7 @@ const removeCard = (id) => {
 // -----CHANGE OPTION-----
 
 const openChangeCardMenu = (card) => {
-  let newTaskStatus = document.querySelector('#status-options');
+  const newTaskStatus = document.querySelector('#status-options');
 
   createNewTask.style.display = 'flex';
 
@@ -186,6 +215,10 @@ const openChangeCardMenu = (card) => {
   card.description = newTaskContent.value;
   card.status = newTaskStatus.value;
 
+  addTaskButton.innerText = 'Change task';
+  addTaskButton.style.color = '#37d050';
+  addTaskButton.style.background = '#daffd4';
+
   createNewTask.onsubmit = () => {
     changeCard(card);
 
@@ -199,14 +232,14 @@ const changeCard = (card) => {
   card.title = newTaskName.value;
   card.description = newTaskContent.value;
   card.status = document.querySelector(
-    'input[name="status-option"]:checked'
+    'input[name="status-option"]:checked',
   ).value;
 
   if (card.title !== '' && card.description !== '') {
     putData(`https://radiant-temple-07706.herokuapp.com/cards/${card.id}`, card)
       .then((data) => {
         console.log(data);
-        location.reload();
+        document.location.reload();
       })
       .catch((error) => {
         console.log(error);
@@ -226,6 +259,7 @@ const newTaskContent = document.querySelector('#new-task-content');
 
 btnAddTask.addEventListener('click', () => {
   createNewTask.style.display = 'flex';
+  addTaskButton.innerText = 'Add task';
   document.getElementById('radioToDo').checked = true; // set default value
 
   createNewTask.onsubmit = () => {
@@ -242,26 +276,6 @@ btnCloseTask.addEventListener('click', () => {
   document.getElementById('radioToDo').checked = true; // set default value
   createNewTask.style.display = 'none';
 });
-
-// Submit new task
-
-const submitNewTask = () => {
-  const title = newTaskName.value;
-  const description = newTaskContent.value;
-  const status = document.querySelector('input[name="status-option"]:checked')
-    .value;
-
-  if (title !== '' && description !== '') {
-    let card = new Card(null, title, description, status);
-    console.log(card);
-    postData('https://radiant-temple-07706.herokuapp.com/cards', card).then(
-      (data) => {
-        console.log(data);
-        location.reload();
-      }
-    );
-  }
-};
 
 // -----ROUTING-----
 
@@ -284,14 +298,10 @@ dashboardPage.addEventListener('click', () => {
   testingPage.parentElement.classList.remove('task-types-active');
   donePage.parentElement.classList.remove('task-types-active');
 
-  document.querySelector('#toDo .task-type-section-title').style.display =
-    'block';
-  document.querySelector('#inProgress .task-type-section-title').style.display =
-    'block';
-  document.querySelector('#testing .task-type-section-title').style.display =
-    'block';
-  document.querySelector('#done .task-type-section-title').style.display =
-    'block';
+  document.querySelector('#toDo .task-type-section-title').style.display = 'block';
+  document.querySelector('#inProgress .task-type-section-title').style.display = 'block';
+  document.querySelector('#testing .task-type-section-title').style.display = 'block';
+  document.querySelector('#done .task-type-section-title').style.display = 'block';
 
   toDoSection.style.display = 'flex';
   InProgressSection.style.display = 'flex';
@@ -311,8 +321,7 @@ toDoPage.addEventListener('click', () => {
   testingPage.parentElement.classList.remove('task-types-active');
   donePage.parentElement.classList.remove('task-types-active');
 
-  document.querySelector('#toDo .task-type-section-title').style.display =
-    'none';
+  document.querySelector('#toDo .task-type-section-title').style.display = 'none';
 
   toDoSection.style.display = 'flex';
   InProgressSection.style.display = 'none';
@@ -332,8 +341,7 @@ inProgressPage.addEventListener('click', () => {
   testingPage.parentElement.classList.remove('task-types-active');
   donePage.parentElement.classList.remove('task-types-active');
 
-  document.querySelector('#inProgress .task-type-section-title').style.display =
-    'none';
+  document.querySelector('#inProgress .task-type-section-title').style.display = 'none';
 
   toDoSection.style.display = 'none';
   InProgressSection.style.display = 'flex';
@@ -353,8 +361,7 @@ testingPage.addEventListener('click', () => {
   toDoPage.parentElement.classList.remove('task-types-active');
   donePage.parentElement.classList.remove('task-types-active');
 
-  document.querySelector('#testing .task-type-section-title').style.display =
-    'none';
+  document.querySelector('#testing .task-type-section-title').style.display = 'none';
 
   toDoSection.style.display = 'none';
   InProgressSection.style.display = 'none';
@@ -374,8 +381,7 @@ donePage.addEventListener('click', () => {
   testingPage.parentElement.classList.remove('task-types-active');
   InProgressSection.parentElement.classList.remove('task-types-active');
 
-  document.querySelector('#done .task-type-section-title').style.display =
-    'none';
+  document.querySelector('#done .task-type-section-title').style.display = 'none';
 
   toDoSection.style.display = 'none';
   InProgressSection.style.display = 'none';
@@ -384,3 +390,12 @@ donePage.addEventListener('click', () => {
 });
 
 refreshTasks();
+
+logOut.addEventListener('click', () => {
+  if (window.confirm('You really want to LOG OUT?')) {
+    window.localStorage.clear();
+    window.location.href = 'login.html';
+  }
+});
+
+avaterLetter.innerText = username.charAt(0).toUpperCase();
