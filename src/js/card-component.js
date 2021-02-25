@@ -10,45 +10,46 @@ export default class Card {
   get htmlRepresentation() {
     // Creating card, it's name, content and button for options (change/delete)
 
-    let cardForm = document.createElement('div');
+    const cardForm = document.createElement('div');
     cardForm.className = 'card';
 
-    let cardTop = document.createElement('div');
+    const cardTop = document.createElement('div');
     cardTop.className = 'card-top';
 
-    let cardName = document.createElement('span');
+    const cardName = document.createElement('span');
     cardName.className = 'card-name';
     cardName.innerHTML = this.name;
 
-    let cardOptionsBtn = document.createElement('button');
+    const cardOptionsBtn = document.createElement('button');
     cardOptionsBtn.className = 'card-options btn';
 
+    // eslint-disable-next-line no-plusplus
     for (let i = 0; i < 3; i++) {
-      let dot = document.createElement('div');
+      const dot = document.createElement('div');
       dot.className = 'card-option-dot';
 
       cardOptionsBtn.appendChild(dot);
     }
 
-    let cardContent = document.createElement('p');
+    const cardContent = document.createElement('p');
     cardContent.className = 'card-content';
     cardContent.innerHTML = this.content;
 
     // Creating card options (chage/delete)
 
-    let cardOptions = document.createElement('div');
+    const cardOptions = document.createElement('div');
     cardOptions.className = 'card-options-form';
 
-    let changeOption = document.createElement('button');
+    const changeOption = document.createElement('button');
     changeOption.className = 'card-options-change btn';
     changeOption.innerHTML = 'Change';
 
-    let deleteOption = document.createElement('button');
+    const deleteOption = document.createElement('button');
     deleteOption.className = 'card-options-delete btn';
     deleteOption.innerHTML = 'Delete';
 
     cardOptionsBtn.addEventListener('click', () => {
-      if (cardOptions.style.display == 'flex') {
+      if (cardOptions.style.display === 'flex') {
         cardOptions.style.display = 'none';
       } else {
         cardOptions.style.display = 'flex';
@@ -89,6 +90,7 @@ export default class Card {
         cardName.style.color = '#37d050';
         cardName.style.background = '#daffd4';
         break;
+      default:
     }
 
     return cardForm;

@@ -52,4 +52,3 @@ const loginFormSubmit = (e) => {
 };
 
 form.addEventListener('submit', loginFormSubmit);
-
