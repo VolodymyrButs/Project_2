@@ -84,7 +84,7 @@ body {
 }
 
 #main-section {
-  width: 1155px;
+  flex: 1;
   height: fit-content;
   padding-left: 20px;
 
